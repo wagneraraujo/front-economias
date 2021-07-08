@@ -1,6 +1,7 @@
 import ContentHeader from "../../components/ContentHeader";
 import { Container } from "./style";
 import SelectInput from "../../components/SelectInput";
+
 const Dashboard: React.FC = () => {
   const options = [
     {
