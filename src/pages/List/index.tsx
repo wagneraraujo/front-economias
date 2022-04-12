@@ -1,9 +1,26 @@
+import React from 'react'
 import ContentHeader from '../../components/ContentHeader'
 import { Container, Filters } from './style'
 import SelectInput from '../../components/SelectInput'
 import HistoryFinancialCard from '../../components/HistoryFinancialCard'
 import Content from '../../components/Content'
-const List: React.FC = () => {
+import { useParams } from 'react-router-dom'
+
+//useMemo para memorizar o valor
+
+interface IrouteParamns {
+  match: {
+    params: {
+      type: string
+    }
+  }
+}
+
+const List: React.FC = ({ params }: any) => {
+  let { type } = useParams()
+  const title = React.useMemo(() => {
+    return type === 'entry-balance' ? 'Entradas' : 'Saídas'
+  }, [type])
   const months = [
     {
       value: 1,
@@ -25,10 +42,12 @@ const List: React.FC = () => {
       label: 2022,
     },
   ]
+
+  console.log(type)
   return (
     <>
       <Container>
-        <ContentHeader title="Dashboard">
+        <ContentHeader title={title}>
           <SelectInput options={months} />
           <SelectInput options={years} />
         </ContentHeader>

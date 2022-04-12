@@ -4,16 +4,16 @@ import {
   LogoImg,
   MenuContainer,
   Title,
-  MenuItemLink
-} from "./style";
-import logoimg from "../../assets/logo.svg";
+  MenuItemLink,
+} from './style'
+import logoimg from '../../assets/logo.svg'
 
 import {
   IoHome,
   IoChevronUpOutline,
   IoChevronDown,
-  IoCloseCircle
-} from "react-icons/io5";
+  IoCloseCircle,
+} from 'react-icons/io5'
 const Aside: React.FC = () => {
   return (
     <Container>
@@ -23,15 +23,15 @@ const Aside: React.FC = () => {
       </Header>
 
       <MenuContainer>
-        <MenuItemLink>
+        <MenuItemLink href="/dashboard">
           <IoHome />
           Dashboard
         </MenuItemLink>
-        <MenuItemLink>
+        <MenuItemLink href="/list/entry-balance">
           <IoChevronUpOutline />
           Entradas
         </MenuItemLink>
-        <MenuItemLink>
+        <MenuItemLink href="/list/exit-balance">
           <IoChevronDown />
           Saídas
         </MenuItemLink>
@@ -41,6 +41,6 @@ const Aside: React.FC = () => {
         </MenuItemLink>
       </MenuContainer>
     </Container>
-  );
-};
-export default Aside;
+  )
+}
+export default Aside

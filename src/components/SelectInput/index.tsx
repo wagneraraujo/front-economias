@@ -1,37 +1,26 @@
-import {Container} from "./style"
-
+import { Container } from './style'
 
 interface ISelectInputsProps {
-  options:{
-    value:string | number;
-    label: string | number;
-  }[],
-
-    
+  options: {
+    value: string | number
+    label: string | number
+  }[]
 }
 
-const SelectInput: React.FC<ISelectInputsProps> = ({options}) => {
-
-  return(
+const SelectInput: React.FC<ISelectInputsProps> = ({ options }) => {
+  return (
     <>
       <Container>
-
         <select name="" id="">
-          
-          {
-            options.map(option => (
-
-              <option value={option.value}>{option.label}</option>
-            ))
-
-          }
-
+          {options.map((option) => (
+            <option value={option.value} key={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
-
       </Container>
     </>
   )
 }
-
 
 export default SelectInput
