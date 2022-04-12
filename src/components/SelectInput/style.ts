@@ -1,12 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
-	padding: 16px;
+  padding: 6px;
 
-	> select {
-		padding: 4px;
-		background-color: #fff;
-		border-radius: 6px;
-		margin-left: 6px;
-	}
-`;
+  > select {
+    padding: 6px;
+    background-color: #fff;
+    border-radius: 4px;
+    margin-left: 4px;
+  }
+`

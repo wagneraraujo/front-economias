@@ -1,98 +1,57 @@
-import ContentHeader from "../../components/ContentHeader";
-import { Container } from "./style";
-import SelectInput from "../../components/SelectInput";
-import HistoryFinancialCard from "../../components/HistoryFinancialCard";
+import ContentHeader from '../../components/ContentHeader'
+import { Container, Filters } from './style'
+import SelectInput from '../../components/SelectInput'
+import HistoryFinancialCard from '../../components/HistoryFinancialCard'
+import Content from '../../components/Content'
 const List: React.FC = () => {
-  const options = [
+  const months = [
     {
-      value: "Wagner",
-      label: "Dev"
+      value: 1,
+      label: 'Janeiro',
     },
     {
-      value: "Wagner",
-      label: "Dev"
-    }
-  ];
+      value: 2,
+      label: 'Favereiro',
+    },
+  ]
+
+  const years = [
+    {
+      value: 2021,
+      label: 2021,
+    },
+    {
+      value: 2022,
+      label: 2022,
+    },
+  ]
   return (
     <>
       <Container>
         <ContentHeader title="Dashboard">
-          <SelectInput options={options} />
-          <SelectInput options={options} />
+          <SelectInput options={months} />
+          <SelectInput options={years} />
         </ContentHeader>
 
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
-        <HistoryFinancialCard
-          cardColor="#abeafe"
-          tagColor="red"
-          title="conta água"
-          subtitle="28/08/02"
-          amount="R$ 150.00"
-        />
+        <Filters>
+          <button type="button" className="tag-filter tag-current">
+            Recorrentes
+          </button>
+          <button type="button" className="tag-filter tag-eventual">
+            Eventual
+          </button>
+        </Filters>
+        <Content>
+          <HistoryFinancialCard
+            cardColor="#abeafe"
+            tagColor="red"
+            title="conta água"
+            subtitle="28/08/02"
+            amount="R$ 150.00"
+          />
+        </Content>
       </Container>
     </>
-  );
-};
-export default List;
+  )
+}
+export default List
