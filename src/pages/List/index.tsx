@@ -21,6 +21,12 @@ interface IrouteParamns {
 
 const List: React.FC = ({ params }: any) => {
   const [data, setData] = React.useState<any[]>([])
+  const [monthSelected, setMonthSelect] = React.useState<string>(
+    String(new Date().getMonth() + 1),
+  )
+  const [yearSelected, setYearSelect] = React.useState<string>(
+    String(new Date().getFullYear()),
+  )
 
   let { type } = useParams()
   const title = React.useMemo(() => {
@@ -38,9 +44,21 @@ const List: React.FC = ({ params }: any) => {
       value: 2,
       label: 'Favereiro',
     },
+    {
+      value: 3,
+      label: 'Março',
+    },
+    {
+      value: 4,
+      label: 'Abril',
+    },
   ]
 
   const years = [
+    {
+      value: 2020,
+      label: 2020,
+    },
     {
       value: 2021,
       label: 2021,
@@ -52,7 +70,15 @@ const List: React.FC = ({ params }: any) => {
   ]
 
   React.useEffect(() => {
-    const response = listData.map((item) => {
+    const response = listData.filter((item) => {
+      const date = new Date(item.date)
+      const month = String(date.getMonth() + 1)
+      const year = String(date.getFullYear())
+
+      return month === monthSelected && year === yearSelected
+    })
+
+    const formatedDate = response.map((item) => {
       return {
         id: String(Math.random() * data.length),
         description: item.description,
@@ -62,15 +88,24 @@ const List: React.FC = ({ params }: any) => {
         tagcolor: '#f8890a',
       }
     })
-    setData(response)
-    console.log(listData)
-  }, [])
+    setData(formatedDate)
+  }, [monthSelected, yearSelected, data.length, listData])
+
+  // console.log({ monthSelected, yearSelected })
   return (
     <>
       <Container>
         <ContentHeader title={title}>
-          <SelectInput options={months} />
-          <SelectInput options={years} />
+          <SelectInput
+            options={months}
+            onChange={(e: any) => setMonthSelect(e.target.value)}
+            defaultValue={monthSelected}
+          />
+          <SelectInput
+            options={years}
+            defaultValue={yearSelected}
+            onChange={(e: any) => setYearSelect(e.target.value)}
+          />
         </ContentHeader>
 
         <Filters>
