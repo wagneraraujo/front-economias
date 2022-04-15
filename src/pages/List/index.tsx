@@ -5,7 +5,10 @@ import SelectInput from '../../components/SelectInput'
 import HistoryFinancialCard from '../../components/HistoryFinancialCard'
 import Content from '../../components/Content'
 import { useParams } from 'react-router-dom'
-
+import gains from '../../db/gains'
+import expenses from '../../db/expenses'
+import { formatCurrency } from '../../utils/formatCurreny'
+import { formatDate } from '../../utils/formatDate'
 //useMemo para memorizar o valor
 
 interface IrouteParamns {
@@ -17,9 +20,14 @@ interface IrouteParamns {
 }
 
 const List: React.FC = ({ params }: any) => {
+  const [data, setData] = React.useState<any[]>([])
+
   let { type } = useParams()
   const title = React.useMemo(() => {
     return type === 'entry-balance' ? 'Entradas' : 'Saídas'
+  }, [type])
+  const listData = React.useMemo(() => {
+    return type === 'entry-balance' ? gains : expenses
   }, [type])
   const months = [
     {
@@ -43,7 +51,20 @@ const List: React.FC = ({ params }: any) => {
     },
   ]
 
-  console.log(type)
+  React.useEffect(() => {
+    const response = listData.map((item) => {
+      return {
+        id: String(Math.random() * data.length),
+        description: item.description,
+        amount: formatCurrency(Number(item.amount)),
+        frequency: item.frequency,
+        data: formatDate(item.date),
+        tagcolor: '#f8890a',
+      }
+    })
+    setData(response)
+    console.log(listData)
+  }, [])
   return (
     <>
       <Container>
@@ -61,13 +82,21 @@ const List: React.FC = ({ params }: any) => {
           </button>
         </Filters>
         <Content>
-          <HistoryFinancialCard
-            cardColor="#abeafe"
-            tagColor="red"
-            title="conta água"
-            subtitle="28/08/02"
-            amount="R$ 150.00"
-          />
+          {data?.map((item, i) => {
+            console.log(item)
+            return (
+              <HistoryFinancialCard
+                key={i}
+                cardColor="#d8e0e7"
+                tagColor={
+                  item.frequency === 'recorrente' ? '#abeafe' : '#c41e08'
+                }
+                title={item.description}
+                subtitle={item.data}
+                amount={item.amount}
+              />
+            )
+          })}
         </Content>
       </Container>
     </>
