@@ -9,6 +9,7 @@ import gains from '../../db/gains'
 import expenses from '../../db/expenses'
 import { formatCurrency } from '../../utils/formatCurreny'
 import { formatDate } from '../../utils/formatDate'
+import listOfMonths from '../../utils/months'
 //useMemo para memorizar o valor
 
 interface IrouteParamns {
@@ -21,12 +22,14 @@ interface IrouteParamns {
 
 const List: React.FC = ({ params }: any) => {
   const [data, setData] = React.useState<any[]>([])
+  const [selectedFrequency, setSelectedFrequency] = React.useState([
+    'recorrente',
+    'eventual',
+  ])
   const [monthSelected, setMonthSelect] = React.useState<string>(
     String(new Date().getMonth() + 1),
   )
-  const [yearSelected, setYearSelect] = React.useState<string>(
-    String(new Date().getFullYear()),
-  )
+  const [yearSelected, setYearSelect] = React.useState<string>('')
 
   let { type } = useParams()
   const title = React.useMemo(() => {
@@ -35,39 +38,6 @@ const List: React.FC = ({ params }: any) => {
   const listData = React.useMemo(() => {
     return type === 'entry-balance' ? gains : expenses
   }, [type])
-  const months = [
-    {
-      value: 1,
-      label: 'Janeiro',
-    },
-    {
-      value: 2,
-      label: 'Favereiro',
-    },
-    {
-      value: 3,
-      label: 'Março',
-    },
-    {
-      value: 4,
-      label: 'Abril',
-    },
-  ]
-
-  const years = [
-    {
-      value: 2020,
-      label: 2020,
-    },
-    {
-      value: 2021,
-      label: 2021,
-    },
-    {
-      value: 2022,
-      label: 2022,
-    },
-  ]
 
   React.useEffect(() => {
     const response = listData.filter((item) => {
@@ -75,7 +45,11 @@ const List: React.FC = ({ params }: any) => {
       const month = String(date.getMonth() + 1)
       const year = String(date.getFullYear())
 
-      return month === monthSelected && year === yearSelected
+      return (
+        month === monthSelected &&
+        year === yearSelected &&
+        selectedFrequency.includes(item.frequency)
+      )
     })
 
     const formatedDate = response.map((item) => {
@@ -89,9 +63,49 @@ const List: React.FC = ({ params }: any) => {
       }
     })
     setData(formatedDate)
-  }, [monthSelected, yearSelected, data.length, listData])
+  }, [monthSelected, yearSelected, data.length, listData, selectedFrequency])
 
-  // console.log({ monthSelected, yearSelected })
+  //apenas anos que existe
+  const year = React.useMemo(() => {
+    let uniqueYears: number[] = []
+
+    listData.forEach((item) => {
+      const date = new Date(item.date)
+      const year = date.getFullYear()
+
+      if (!uniqueYears.includes(year)) {
+        uniqueYears.push(year)
+      }
+    })
+    return uniqueYears.map((year) => {
+      return {
+        value: year,
+        label: year,
+      }
+    })
+  }, [listData])
+
+  const months = React.useMemo(() => {
+    return listOfMonths.map((month, index) => {
+      return {
+        value: index + 1,
+        label: month,
+      }
+    })
+  }, [])
+
+  const handleFrequencyclick = (frequency: string) => {
+    const alredSelected = selectedFrequency.findIndex(
+      (item) => item === frequency,
+    )
+    if (alredSelected >= 0) {
+      const filtered = selectedFrequency.filter((item) => item !== frequency)
+      setSelectedFrequency(filtered)
+    } else {
+      setSelectedFrequency((prev) => [...prev, frequency])
+    }
+  }
+  console.log('memmasmfas=>', { monthSelected, yearSelected })
   return (
     <>
       <Container>
@@ -102,29 +116,37 @@ const List: React.FC = ({ params }: any) => {
             defaultValue={monthSelected}
           />
           <SelectInput
-            options={years}
+            options={year}
             defaultValue={yearSelected}
             onChange={(e: any) => setYearSelect(e.target.value)}
           />
         </ContentHeader>
 
         <Filters>
-          <button type="button" className="tag-filter tag-current">
+          <button
+            type="button"
+            className="tag-filter tag-current"
+            onClick={() => handleFrequencyclick('recorrente')}
+          >
             Recorrentes
           </button>
-          <button type="button" className="tag-filter tag-eventual">
+          <button
+            type="button"
+            className="tag-filter tag-eventual"
+            onClick={() => handleFrequencyclick('eventual')}
+          >
             Eventual
           </button>
         </Filters>
         <Content>
           {data?.map((item, i) => {
-            console.log(item)
+            console.log(data)
             return (
               <HistoryFinancialCard
                 key={i}
                 cardColor="#d8e0e7"
                 tagColor={
-                  item.frequency === 'recorrente' ? '#abeafe' : '#c41e08'
+                  item.frequency === 'recorrente' ? '#0880c5' : '#ffbd07'
                 }
                 title={item.description}
                 subtitle={item.data}
